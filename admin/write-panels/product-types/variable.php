@@ -1,0 +1,613 @@
+<?php
+
+/**
+ * Variable Product Type
+ * Functions specific to variable products (for the write panels)
+ * DISCLAIMER
+ * Do not edit or add directly to this file if you wish to upgrade FFL Commerce to newer
+ * versions in the future. If you wish to customise FFL Commerce core for your needs,
+ * please use our GitHub repository to publish essential changes for consideration.
+ *
+ * @package             FFLCommerce
+ * @category            Admin
+ * @author              Tampa Bay Tactical Supply, Inc.
+ * @copyright           Copyright © 2011-2014 Tampa Bay Tactical Supply, Inc. & Jigoshop.
+ * @license             GNU General Public License v3
+ */
+class fflcommerce_product_meta_variable extends fflcommerce_product_meta
+{
+	public function __construct()
+	{
+		add_action('fflcommerce_product_write_panel_tabs', array($this, 'register_tab'));
+		add_action('fflcommerce_process_product_meta_variable', array($this, 'save'), 1);
+		add_action('fflcommerce_product_write_panels', array($this, 'display'));
+		add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
+
+		add_action('wp_ajax_fflcommerce_remove_variation', array($this, 'remove'));
+	}
+
+	/**
+	 * Registers tab for use in the product meta box
+	 *
+	 * @return  void
+	 */
+	public function register_tab()
+	{
+		echo '<li class="variable_tab"><a href="#variable_product_options">'.__('Variations', 'fflcommerce').'</a></li>';
+	}
+
+	/**
+	 * Registers scripts for use in the admin
+	 * Also localizes variables for use in the javascript, essential for variation addition
+	 *
+	 * @param string $hook
+	 */
+	public function admin_enqueue_scripts($hook)
+	{
+		global $post;
+
+		// Don't enqueue script if not on product edit screen
+		if ($hook != 'post.php' || $post->post_type != 'product') {
+			return;
+		}
+
+		wp_enqueue_script('fflcommerce-variable-js', FFLCOMMERCE_URL.'/assets/js/variable.js', array('jquery'), false, true);
+		wp_localize_script('fflcommerce-variable-js', 'varmeta', array(
+			'assets_url' => FFLCOMMERCE_URL,
+			'ajax_url' => admin_url('admin-ajax.php'),
+			'i18n' => array(
+				'variations_required' => __('You need to add some variations first', 'fflcommerce'),
+				'remove_all' => __('Are you sure you want to delete all variations', 'fflcommerce'),
+				'set_regular_price' => __('Enter a regular price', 'fflcommerce'),
+				'set_sale_price' => __('Enter a sale price', 'fflcommerce'),
+				'set_stock' => __('Enter a stock value', 'fflcommerce'),
+				'set_weight' => __('Enter a weight value', 'fflcommerce'),
+				'set_width' => __('Enter a width value', 'fflcommerce'),
+				'set_length' => __('Enter a length value', 'fflcommerce'),
+				'set_height' => __('Enter a height value', 'fflcommerce'),
+			),
+			'actions' => array(
+				'remove' => array(
+					'action' => 'fflcommerce_remove_variation',
+					'nonce' => wp_create_nonce('delete-variation'),
+					'confirm' => __('Are you sure you want to remove this variation?', 'fflcommerce'),
+				),
+				'create' => array(
+					'action' => 'fflcommerce_create_variation',
+					'panel' => $this->generate_panel(maybe_unserialize(get_post_meta($post->ID, 'product_attributes', true)))
+				),
+			),
+		));
+	}
+
+	/**
+	 * Generates a variation panel
+	 *
+	 * @param   array    attributes
+	 * @param   object   variation
+	 * @return  HTML
+	 */
+	private function generate_panel($attributes, $variation = null)
+	{
+		if (!$this->has_variable_attributes($attributes)) {
+			return false;
+		}
+
+		// Set the default image as the placeholder
+		$image = FFLCOMMERCE_URL.'/assets/images/placeholder.png';
+
+		if (!$variation) {
+			// Create a blank variation object with a unique id
+			$variation = new stdClass;
+			$variation->ID = '__ID__';
+			$variation->post_status = 'publish';
+		} else {
+			// Get the variation meta
+			$meta = get_post_custom($variation->ID);
+
+			// If variation has a thumbnail display that
+			if ($image_id = $meta['_thumbnail_id'][0]) {
+				$image = wp_get_attachment_url($image_id);
+			}
+		}
+
+		// Start buffering the output
+		ob_start();
+		?>
+		<div class="fflcommerce_variation postbox closed" rel="<?php echo $variation->ID; ?>">
+			<button type="button" class="remove_variation button"><?php _e('Remove', 'fflcommerce'); ?></button>
+			<div class="handlediv" title="Click to toggle"><br></div>
+			<h3 class="handle"><?php echo $this->attribute_selector($attributes, $variation); ?></h3>
+			<div class="inside">
+				<table cellpadding="0" cellspacing="0" class="fflcommerce_variable_attributes">
+					<tbody>
+					<?php do_action('fflcommerce_variable_product_table_begin', $variation, $attributes) ?>
+					<tr>
+						<td class="upload_image" rowspan="2">
+							<a href="#" class="upload_image_button" rel="<?php echo $variation->ID; ?>">
+								<img src="<?php echo $image ?>" width="93px" />
+								<input type="hidden" name="<?php echo esc_attr($this->field_name('_thumbnail_id', $variation)); ?>" class="upload_image_id" value="<?php isset($image_id) and print esc_attr($image_id); ?>" />
+							</a>
+						</td>
+						<td>
+							<?php
+							$terms = get_the_terms($variation->ID, 'product_type');
+							$product_type = ($terms) ? current($terms)->slug : 'simple';
+							?>
+							<label class="clearlabel"><?php _e('Type', 'fflcommerce') ?></label>
+							<select class="product_type" name="<?php echo esc_attr($this->field_name('product-type', $variation)); ?>">
+								<option value="simple" <?php selected('simple', $product_type) ?>><?php _e('Simple', 'fflcommerce') ?></option>
+								<option value="downloadable" <?php selected('downloadable', $product_type) ?>><?php _e('Downloadable', 'fflcommerce') ?></option>
+								<option value="virtual" <?php selected('virtual', $product_type) ?>><?php _e('Virtual', 'fflcommerce') ?></option>
+							</select>
+						</td>
+						<td>
+							<label><?php _e('SKU', 'fflcommerce'); ?>
+								<?php $value = esc_attr(isset($meta['sku'][0]) ? $meta['sku'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('sku', $variation)); ?>" placeholder="<?php echo esc_attr($variation->ID); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+						<td>
+							<label><?php _e('Stock Qty', 'fflcommerce'); ?>
+								<?php $value = esc_attr(isset($meta['stock'][0]) ? $meta['stock'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('stock', $variation)); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+						<td>
+							<label><?php _e('Price', 'fflcommerce'); ?>
+								<?php $value = esc_attr(isset($meta['regular_price'][0]) ? $meta['regular_price'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('regular_price', $variation)); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+						<td>
+							<label><?php _e('Sale Price', 'fflcommerce'); ?>
+								<?php $value = esc_attr(isset($meta['sale_price'][0]) ? $meta['sale_price'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('sale_price', $variation)); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+						<td>
+							<label><?php _e('Enabled', 'fflcommerce'); ?>
+								<input type="checkbox" class="checkbox" name="<?php echo esc_attr($this->field_name('enabled', $variation)); ?>" <?php checked($variation->post_status, 'publish'); ?> />
+							</label>
+						</td>
+					</tr>
+					<tr class="simple options" <?php echo (('simple' == $product_type) || ('variable' == $product_type)) ? 'style="display: table-row;"' : 'style="display: none;"'; ?>>
+						<td>
+							<label><?php _e('Weight', 'fflcommerce') ?>
+								<?php $value = esc_attr(isset($meta['weight'][0]) ? $meta['weight'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('weight', $variation)); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+						<td colspan="4" class="dimensions">
+							<label><?php _e('Dimensions', 'fflcommerce') ?> <?php echo '('.fflcommerce_Base::get_options()->get('fflcommerce_dimension_unit').')' ?></label>
+							<?php $value = esc_attr(isset($meta['length'][0]) ? $meta['length'][0] : null); ?>
+							<input type="text" name="<?php echo esc_attr($this->field_name('length', $variation)); ?>" placeholder="<?php _e('Length', 'fflcommerce') ?>" value="<?php echo $value; ?>" />
+							<?php $value = esc_attr(isset($meta['width'][0]) ? $meta['width'][0] : null); ?>
+							<input type="text" name="<?php echo esc_attr($this->field_name('width', $variation)); ?>" placeholder="<?php _e('Width', 'fflcommerce') ?>" value="<?php echo $value; ?>" />
+							<?php $value = esc_attr(isset($meta['height'][0]) ? $meta['height'][0] : null); ?>
+							<input type="text" name="<?php echo esc_attr($this->field_name('height', $variation)); ?>" placeholder="<?php _e('Height', 'fflcommerce') ?>" value="<?php echo $value; ?>" />
+						</td>
+						<td colspan="2"></td>
+					</tr>
+					<tr class="downloadable options" <?php echo ('downloadable' == $product_type) ? 'style="display: table-row;"' : 'style="display: none;"'; ?>>
+						<td colspan="4" class="download_file">
+							<label class="clearlabel"><?php _e('File Location', 'fflcommerce') ?></label>
+							<?php $value = esc_attr(isset($meta['file_path'][0]) ? $meta['file_path'][0] : null); ?>
+							<input type="text" name="<?php echo esc_attr($this->field_name('file_path', $variation)); ?>" value="<?php echo $value; ?>" />
+							<input type="submit" class="upload_file_button button-secondary" value="Upload">
+						</td>
+						<td colspan="3">
+							<label><?php _e('Re-downloads Limit', 'fflcommerce') ?>
+								<?php $value = esc_attr(isset($meta['download_limit'][0]) ? $meta['download_limit'][0] : null); ?>
+								<input type="text" name="<?php echo esc_attr($this->field_name('download_limit', $variation)); ?>" value="<?php echo $value; ?>" />
+							</label>
+						</td>
+					</tr>
+					<tr class="virtual options" <?php echo('virtual' == $product_type ? 'style="display: table-row;"' : 'style="display: none;"'); ?>>
+						<td colspan="6">&nbsp;</td>
+					</tr>
+					<?php do_action('fflcommerce_variable_product_table_end', $variation, $attributes) ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php
+		// Flush & return the buffer
+		return ob_get_clean();
+	}
+
+	/**
+	 * Checks all the product attributes for variation defined attributes
+	 *
+	 * @param   mixed   Attributes
+	 * @return  bool
+	 */
+	private function has_variable_attributes($attributes)
+	{
+		if (!$attributes) {
+			return false;
+		}
+
+		foreach ($attributes as $attribute) {
+			if (isset($attribute['variation']) && $attribute['variation']) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns all the possible variable attributes in select form
+	 *
+	 * @param   array    Attributes array
+	 * @param   object   Variation Post Object
+	 * @return  HTML
+	 */
+	private function attribute_selector($attributes, $variation = null)
+	{
+		global $post;
+		$html = null;
+
+		if (!is_ajax()) {
+			$variation_data = get_post_meta($variation->ID, 'variation_data');
+		}
+
+		// Attribute Variation Selector
+		foreach ($attributes as $attr) {
+			// If not variable attribute then skip
+			if (!isset($attr['variation'])) {
+				continue;
+			}
+
+			// Get current value for variation (if set)
+			$selected = '';
+			if (!is_ajax()) {
+				$tax = 'tax_'.sanitize_title($attr['name']);
+				if (isset($variation_data[0][$tax])) {
+					$selected = $variation_data[0][$tax];
+				}
+			}
+
+			// Open the select & set a default value
+			$product = new fflcommerce_product($post->ID);
+			$html .= '<select name="'.$this->field_name('tax_'.sanitize_title($attr['name']), $variation).'">
+						<option value="">'.__('Any', 'fflcommerce').' '.$product->attribute_label('pa_'.$attr['name']).'&hellip;</option>';
+
+			// Get terms for attribute taxonomy or value if its a custom attribute
+			if ($attr['is_taxonomy']) {
+				$options = wp_get_object_terms($post->ID, 'pa_'.sanitize_title($attr['name']), array('orderby' => 'slug'));
+				if (!is_wp_error($options)) {
+					foreach ($options as $option) {
+						$html .= '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
+					}
+				}
+			} else {
+				$options = explode(',', $attr['value']);
+				foreach ($options as $option) {
+					$option = trim($option);
+					$html .= '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
+				}
+			}
+
+			// Close the select
+			$html .= '</select>';
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Returns a specially formatted field name for variations
+	 *
+	 * @param   string   Field Name
+	 * @param   object   Variation Post Object
+	 * @return  string
+	 */
+	private function field_name($name, $variation = null)
+	{
+		return "variations[{$variation->ID}][{$name}]";
+	}
+
+	/**
+	 * Echos a variable type option for the product type selector
+	 *
+	 * @param $type
+	 */
+	public function register($type)
+	{
+		echo '<option value="variable" '.selected($type, 'variable', false).'>'.__('Variable', 'fflcommerce').'</option>';
+	}
+
+	/**
+	 * Removes a product variation via XHR
+	 *
+	 * @return  void
+	 */
+	public function remove()
+	{
+		check_ajax_referer('delete-variation', 'security');
+
+		$ID = intval($_POST['variation_id']);
+		wp_set_object_terms($ID, null, 'product_type'); // Remove object terms
+		wp_delete_post($ID);
+
+		exit;
+	}
+
+	/**
+	 * Process the product variable meta
+	 *
+	 * @param   int $parent_id Product ID
+	 * @return  void
+	 */
+	public function save($parent_id)
+	{
+		global $wpdb;
+
+		// Do not run if there are no variations
+		if (!isset($_POST['variations'])) {
+			return;
+		}
+
+		// Get the attributes to be used later
+		$attributes = (array)maybe_unserialize(get_post_meta($parent_id, 'product_attributes', true));
+		$minimal_price = PHP_INT_MAX;
+
+		foreach ($_POST['variations'] as $ID => $meta) {
+			/**
+			 * Generate a post title of the current variation.
+			 * Parent Title - [attribute: variation]
+			 */
+			$taxes = array();
+			foreach ($meta as $k => $v) {
+				if (strstr($k, 'tax_')) {
+					$tax = substr($k, 4);
+					$taxes[] = sprintf('[%s: %s]', $tax, !empty($v) ? $v : 'Any '.$tax);
+				}
+			}
+
+			$post_title = !empty($_POST['post_title']) ? $_POST['post_title'] : the_title('', '', false);
+			$title = sprintf('%s - %s', $post_title, implode($taxes, ' '));
+
+			/**
+			 * Prevent duplicate variations
+			 */
+			// Update post data or Add post if new
+			if (strpos($ID, '_new')) {
+				// check for an existing variation with matching attributes to prevent duplication
+				$current_meta = $meta;
+				foreach ($current_meta as $current_id => $current_value) {
+					// discard everything but the taxonomies
+					if (strpos($current_id, 'tax_') !== 0) {
+						unset($current_meta[$current_id]);
+					}
+				}
+				// we now have just the taxonomies in use for this new variation in $current_meta, match them up to others
+				$all_variations = $_POST['variations'];
+				unset($all_variations[$ID]); // we don't need the current new variation
+				$duplicate = false;
+				foreach ($all_variations as $this_id => $this_meta) {
+					$haystack_meta = $this_meta;
+					foreach ($haystack_meta as $haystack_id => $haystack_value) {
+						// discard everything but the taxonomies
+						if (strpos($haystack_id, 'tax_') !== 0) {
+							unset($haystack_meta[$haystack_id]);
+						}
+					}
+					// we now have the taxonomies only for this haystack variation
+					$result = array_diff($haystack_meta, $current_meta);
+					if (empty($result)) {
+						$duplicate = true;
+					}
+				}
+
+				if (!$duplicate) {
+					$ID = wp_insert_post(array(
+						'post_title' => !empty($title) ? $title : "#{$parent_id}: Child Variation",
+						'post_status' => isset($meta['enabled']) ? 'publish' : 'draft',
+						'post_parent' => $parent_id,
+						'post_type' => 'product_variation'
+					));
+				} else {
+					// silent fail, should put up a message?
+				}
+			} else {
+				$_product = new fflcommerce_product_variation($ID);
+				if (FFLCommerce_Base::get_options()->get('fflcommerce_hide_no_stock_product') == 'yes' && $_product->managing_stock()) {
+					if ($meta['stock'] <= fflcommerce_Base::get_options()->get('fflcommerce_notify_no_stock_amount') && $meta['stock'] != '') {
+						unset($meta['enabled']);
+					} else {
+						$meta['enabled'] = true;
+					}
+				}
+				$wpdb->update($wpdb->posts, array(
+					'post_title' => !empty($title) ? $title : "#{$parent_id}: Child Variation",
+					'post_status' => isset($meta['enabled']) ? 'publish' : 'draft'
+				), array('ID' => $ID));
+			}
+
+			// Set the product type
+			wp_set_object_terms($ID, sanitize_title($meta['product-type']), 'product_type');
+
+			// Set variation meta data
+			$meta['regular_price'] = fflcommerce_sanitize_num($meta['regular_price']);
+			if (!empty($meta['regular_price']) && !is_numeric($meta['regular_price'])) {
+				add_filter('redirect_post_location', function ($location){
+					return add_query_arg('fflcommerce_message', 'invalid_variation_price', $location);
+				});
+				$meta['regular_price'] = 0.0;
+			}
+
+			if(empty($meta['regular_price'])){
+					$meta['regular_price'] = null;
+			}
+
+			update_post_meta($ID, 'sku', $meta['sku']);
+			update_post_meta($ID, 'regular_price', $meta['regular_price']);
+			if ($meta['regular_price'] < $minimal_price) {
+				$minimal_price = $meta['regular_price'];
+			}
+
+			$sale_price = !empty($meta['sale_price'])
+				? (!strstr($meta['sale_price'], '%') ? fflcommerce_sanitize_num($meta['sale_price']) : $meta['sale_price'])
+				: '';
+
+			if (strstr($meta['sale_price'], '%')) {
+				update_post_meta($ID, 'sale_price', $sale_price);
+			} else if (!empty($sale_price) && $sale_price < fflcommerce_sanitize_num($meta['regular_price'])) {
+				update_post_meta($ID, 'sale_price', $sale_price);
+			} else {
+				// silently fail if entered sale price > regular price (or nothing entered)
+				update_post_meta($ID, 'sale_price', '');
+			}
+
+			update_post_meta($ID, 'weight', $meta['weight']);
+			update_post_meta($ID, 'length', $meta['length']);
+			update_post_meta($ID, 'height', $meta['height']);
+			update_post_meta($ID, 'width', $meta['width']);
+
+			update_post_meta($ID, 'stock', $meta['stock']);
+			update_post_meta($ID, '_thumbnail_id', $meta['_thumbnail_id']);
+
+			// Downloadable Only
+			if ($meta['product-type'] == 'downloadable') {
+				update_post_meta($ID, 'file_path', $meta['file_path']);
+				update_post_meta($ID, 'download_limit', $meta['download_limit']);
+			}
+
+			// Remove the current data
+			delete_post_meta($ID, 'variation_data');
+
+			// Update taxonomies
+			$variation_data = array();
+			foreach ($attributes as $attribute) {
+				// Skip if attribute is not for variation
+				if (!isset($attribute['variation'])) {
+					continue;
+				}
+
+				// Configure the data
+				$key = 'tax_'.sanitize_title($attribute['name']);
+				if (isset($meta[$key])) {
+					$variation_data[$key] = $meta[$key];
+				}
+			}
+
+			update_post_meta($ID, 'variation_data', $variation_data);
+			do_action('fflcommerce_variable_product_table_data_save', $ID, $meta);
+		}
+
+		// Update default attribute options setting
+		$default_attributes = array();
+		foreach ($attributes as $attribute) {
+			if (isset($attribute['variation'])) {
+				$value = 'default_attribute_'.sanitize_title($attribute['name']);
+				if (isset($_POST[$value])) {
+					$value = esc_attr(trim($_POST[$value]));
+				} else {
+					$value = null;
+				}
+				if ($value) {
+					$default_attributes[sanitize_title($attribute['name'])] = $value;
+				}
+			}
+		}
+
+		update_post_meta($parent_id, '_default_attributes', $default_attributes);
+		update_post_meta($parent_id, 'regular_price', $minimal_price);
+	}
+
+	public function display()
+	{
+		global $post;
+
+		// Get the attributes
+		$attributes = (array)maybe_unserialize(get_post_meta($post->ID, 'product_attributes', true));
+
+		// Get all variations of the product
+		$variations = get_posts(array(
+			'post_type' => 'product_variation',
+			'post_status' => array('draft', 'publish'),
+			'numberposts' => -1,
+			'orderby' => 'id',
+			'order' => 'asc',
+			'post_parent' => $post->ID
+		));
+		?>
+		<div id='variable_product_options' class='panel'>
+			<?php if ($this->has_variable_attributes($attributes)): ?>
+				<div class="toolbar">
+					<select name="variation_actions">
+						<option value="default"><?php _e('Bulk Actions', 'fflcommerce') ?></option>
+						<option value="remove_all"><?php _e('Remove All Variations', 'fflcommerce') ?></option>
+						<optgroup label="<?php _e('Set All', 'fflcommerce') ?>:">
+							<option value="set_all_regular_prices"><?php _e('Regular Prices', 'fflcommerce') ?></option>
+							<option value="set_all_sale_prices"><?php _e('Sale Prices', 'fflcommerce') ?></option>
+							<option value="set_all_stock"><?php _e('Stock', 'fflcommerce') ?></option>
+							<option value="set_all_weight"><?php _e('Weight', 'fflcommerce') ?></option>
+							<option value="set_all_width"><?php _e('Width', 'fflcommerce') ?></option>
+							<option value="set_all_length"><?php _e('Length', 'fflcommerce') ?></option>
+							<option value="set_all_height"><?php _e('Height', 'fflcommerce') ?></option>
+						</optgroup>
+					</select>
+					<input id="do_actions" type="submit" class="button-secondary" value="<?php _e('Apply', 'fflcommerce'); ?>">
+					<button type='button' class='button button-seconday add_variation'><?php _e('Add Variation', 'fflcommerce') ?></button>
+				</div>
+			<?php endif; ?>
+			<div class='fflcommerce_variations'>
+				<?php if ($this->has_variable_attributes($attributes)): ?>
+					<?php
+					if ($variations) {
+						foreach ($variations as $variation) {
+							echo $this->generate_panel($attributes, $variation);
+						}
+					}
+					?>
+				<?php endif; ?>
+			</div>
+			<div class="toolbar">
+				<strong><?php _e('Default selections:', 'fflcommerce'); ?></strong>
+				<?php
+				$default_attributes = (array)maybe_unserialize(get_post_meta($post->ID, '_default_attributes', true));
+				foreach ($attributes as $attr) {
+					// If not variable attribute then skip
+					if (!isset($attr['variation'])) {
+						continue;
+					}
+
+					// Get current value for variation (if set)
+					$selected = (isset($default_attributes[sanitize_title($attr['name'])])) ? $default_attributes[sanitize_title($attr['name'])] : '';
+
+					// Open the select & set a default value
+					echo '<select name="default_attribute_'.sanitize_title($attr['name']).'" >';
+					$product = new fflcommerce_product($post->ID);
+					echo '<option value="">'.__('No default', 'fflcommerce').' '.$product->attribute_label('pa_'.$attr['name']).'&hellip;</option>';
+
+					// Get terms for attribute taxonomy or value if its a custom attribute
+					if ($attr['is_taxonomy']) {
+						$options = wp_get_object_terms($post->ID, 'pa_'.sanitize_title($attr['name']), array('orderby' => 'slug'));
+						if (!is_wp_error($options)) {
+							foreach ($options as $option) {
+								echo '<option value="'.esc_attr($option->slug).'" '.selected($selected, $option->slug, false).'>'.$option->name.'</option>';
+							}
+						}
+					} else {
+						$options = explode(',', $attr['value']);
+						foreach ($options as $option) {
+							$option = trim($option);
+							echo '<option '.selected($selected, $option, false).' value="'.esc_attr($option).'">'.$option.'</option>';
+						}
+					}
+
+					// Close the select
+					echo '</select>';
+				}
+				?>
+			</div>
+		</div>
+	<?php
+	}
+}
+
+new fflcommerce_product_meta_variable();
