@@ -15,7 +15,7 @@
  * @license             GNU General Public License v3
  * 
  */
-class fflcommerce_payment_gateways extends Jigoshop_Singleton
+class fflcommerce_payment_gateways extends FFLCommerce_Singleton
 {
 	protected static $gateways = array();
 

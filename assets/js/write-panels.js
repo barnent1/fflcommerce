@@ -147,7 +147,7 @@ jQuery(function($) {
 					return Math._round( number * coefficient ) / coefficient;
 				}
 
-				var taxBeforeDiscount = "<?php Jigoshop_Base::get_options()->get('fflcommerce_tax_after_coupon'); ?>";
+				var taxBeforeDiscount = "<?php FFLCommerce_Base::get_options()->get('fflcommerce_tax_after_coupon'); ?>";
 				var itemTotal = 0;
 				var subtotal = 0;
 				var totalTax = 0;

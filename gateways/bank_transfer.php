@@ -17,7 +17,7 @@
  */
 
 /**
- * Add the gateway to Jigoshop
+ * Add the gateway to FFL Commerce
  **/
 function add_bank_transfer_gateway( $methods ) {
 	$methods[] = 'fflcommerce_bank_transfer';
@@ -128,16 +128,16 @@ class fflcommerce_bank_transfer extends fflcommerce_payment_gateway {
 	}
 
 	/**
-	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 * Default Option settings for WordPress Settings API using the FFLCommerce_Options class
 	 *
-	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 * These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 *
 	 */
 	protected function get_default_options() {
 
 		$defaults = array();
 
-		// Define the Section name for the Jigoshop_Options
+		// Define the Section name for the FFLCommerce_Options
 		$defaults[] = array( 'name' => __('Bank Transfer', 'fflcommerce'), 'type' => 'title', 'desc' => __('Accept Bank Transfers as a method of payment. There is no automated process associated with this, you must manually process an order when you receive payment.', 'fflcommerce') );
 
 		// List each option in order of appearance with details

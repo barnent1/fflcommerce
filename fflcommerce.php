@@ -232,7 +232,7 @@ function fflcommerce_admin_toolbar() {
 	global $wp_admin_bar;
 	$manage_products = current_user_can('manage_fflcommerce_products');
 	$manage_orders = current_user_can('manage_fflcommerce_orders');
-	$manage_jigoshop = current_user_can('manage_fflcommerce');
+	$manage_fflcommerce = current_user_can('manage_fflcommerce');
 	$view_reports = current_user_can('view_fflcommerce_reports');
 	$manege_emails = current_user_can('manage_fflcommerce_emails');
 
@@ -602,7 +602,7 @@ function is_fflcommerce_page($pages)
 	return $result;
 }
 
-// Define all Jigoshop page constants
+// Define all FFL Commerce page constants
 define('FFLCOMMERCE_CART', 'cart');
 define('FFLCOMMERCE_CHECKOUT', 'checkout');
 define('FFLCOMMERCE_PAY', 'pay');
@@ -1162,7 +1162,7 @@ function is_product_list()
 }
 
 /**
- * Evaluates to true for all Jigoshop pages
+ * Evaluates to true for all FFL Commerce pages
  *
  * @return bool
  * @since 0.9.9
@@ -1582,7 +1582,7 @@ function fflcommerce_page_body_classes()
 	if (is_page(fflcommerce_get_page_id('thanks'))) {
 		fflcommerce_add_body_class(array('fflcommerce', 'fflcommerce-thanks'));
 	}
-	if (is_page(jigoshop_get_page_id('pay'))) {
+	if (is_page(fflcommerce_get_page_id('pay'))) {
 
 		fflcommerce_add_body_class(array('fflcommerce', 'fflcommerce-pay'));
 	}

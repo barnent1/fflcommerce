@@ -17,7 +17,7 @@
  */
 
 /**
- * Add the gateway to JigoShop
+ * Add the gateway to FFL Commerce
  */
 function add_futurepay_gateway( $methods ) {
 	$methods[] = 'futurepay';
@@ -68,15 +68,15 @@ class futurepay extends fflcommerce_payment_gateway {
 
 
 	/**
-	 *  Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 *  Default Option settings for WordPress Settings API using the FFLCommerce_Options class
 	 *
-	 *  These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 *  These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 */
 	protected function get_default_options() {
 
 		$defaults = array();
 
-		// Define the Section name for the Jigoshop_Options
+		// Define the Section name for the FFLCommerce_Options
 		$defaults[] = array(
 			'name' => sprintf(__('FuturePay %s', 'fflcommerce'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.fflcommerce::assets_url() .'/assets/images/icons/futurepay.png" alt="FuturePay">'),
 			'type' => 'title',
@@ -149,7 +149,7 @@ class futurepay extends fflcommerce_payment_gateway {
 		if ( $this->enabled == 'no' ) return;
 
 		if ( ! in_array( FFLCommerce_Base::get_options()->get( 'fflcommerce_currency' ), $this->allowed_currency )) {
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the Jigoshop currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','fflcommerce'), implode( ', ', $this->allowed_currency ), FFLCommerce_Base::get_options()->get( 'fflcommerce_currency' ) ).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway accepts payments in currencies of %s.  Your current currency is %s.  FuturePay won\'t work until you change the FFL Commerce currency to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','fflcommerce'), implode( ', ', $this->allowed_currency ), FFLCommerce_Base::get_options()->get( 'fflcommerce_currency' ) ).'</p></div>';
 			FFLCommerce_Base::get_options()->set( 'fflcommerce_futurepay_enabled', 'no' );
 		}
 
@@ -158,7 +158,7 @@ class futurepay extends fflcommerce_payment_gateway {
 			foreach ( $this->merchant_countries as $this_country ) {
 				$country_list[] = fflcommerce_countries::get_country($this_country);
 			}
-			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the Jigoshop Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','fflcommerce'), implode( ', ', $country_list ), fflcommerce_countries::get_base_country() ).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The FuturePay gateway is available to merchants from: %s.  Your country is: %s.  FuturePay won\'t work until you change the FFL Commerce Shop Base country to an accepted one.  FuturePay is currently disabled on the Payment Gateways settings tab.','fflcommerce'), implode( ', ', $country_list ), fflcommerce_countries::get_base_country() ).'</p></div>';
 			FFLCommerce_Base::get_options()->set( 'fflcommerce_futurepay_enabled', 'no' );
 		}
 
@@ -270,7 +270,7 @@ class futurepay extends fflcommerce_payment_gateway {
 			'shipping_date' => date('Y/m/d g:i:s') // Current date & time
 		);
 
-		// for Jigoshop 1.7, FuturePay doesn't allow negative prices (or 0.00 ) which affects discounts
+		// for FFL Commerce 1.0, FuturePay doesn't allow negative prices (or 0.00 ) which affects discounts
 		// with FuturePay doing the calcs, so we will bundle all products into ONE line item with
 		// a quantity of ONE and send it that way using the final order total after shipping
 		// and discounts are applied

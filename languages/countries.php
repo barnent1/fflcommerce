@@ -6,15 +6,14 @@
  * Don't translate this file, all those strings are to be translated in the .po files
  *
  * DISCLAIMER
- *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * Do not edit or add directly to this file if you wish to upgrade FFL Commerce to newer
+ * versions in the future. If you wish to customise FFL Commerce core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package             Jigoshop
+ * @package             FFLCommerce
  * @category            Core
- * @author              Jigoshop
- * @copyright           Copyright © 2011-2014 Jigoshop.
+ * @author              FFLCommerce
+ * @copyright           Copyright © 2011-2015 Tampa Bay Tactical Supply and Jigoshop.
  * @license             GNU General Public License v3
  */
 

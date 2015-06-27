@@ -96,7 +96,7 @@ function fflcommerce_add_order_item() {
 		
 		<?php do_action('fflcommerce_admin_order_item_values', $_product, array(), 0); ?>
 		<td class="quantity"><input type="text" name="item_quantity[]" placeholder="<?php _e('Quantity e.g. 2', 'fflcommerce'); ?>" value="1" /></td>
-        <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'fflcommerce'); ?>" value="<?php echo esc_attr( $jigoshop_options->get('jigoshop_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
+        <td class="cost"><input type="text" name="item_cost[]" placeholder="<?php _e('Cost per unit ex. tax e.g. 2.99', 'fflcommerce'); ?>" value="<?php echo esc_attr( $fflcommerce_options->get('fflcommerce_prices_include_tax') == 'yes' ? $_product->get_price_excluding_tax() : $_product->get_price() ); ?>" /></td>
         <td class="tax"><input type="text" name="item_tax_rate[]" placeholder="<?php _e('Tax Rate e.g. 20.0000', 'fflcommerce'); ?>" value="<?php echo esc_attr( fflcommerce_tax::calculate_total_tax_rate($_product->get_tax_base_rate()) ); ?>" /></td>
 		<td class="center">
 			<input type="hidden" name="item_id[]" value="<?php echo esc_attr( $_product->id ); ?>" />

@@ -32,7 +32,7 @@ add_action('admin_init', function(){
 
 	fflcommerce_emails::register_mail('low_stock_notification', __('Low Stock Notification'), get_stock_email_arguments_description());
 	fflcommerce_emails::register_mail('no_stock_notification', __('No Stock Notification'), get_stock_email_arguments_description());
-	fflcommerce_emails::register_mail('product_on_backorder_notification', __('Backorder Notification'), array_merge(get_stock_email_arguments_description(), get_order_email_arguments_description(), array('amount' => __('Amount', 'jigoshop'))));
+	fflcommerce_emails::register_mail('product_on_backorder_notification', __('Backorder Notification'), array_merge(get_stock_email_arguments_description(), get_order_email_arguments_description(), array('amount' => __('Amount', 'fflcommerce'))));
 	fflcommerce_emails::register_mail('send_customer_invoice', __('Send Customer Invoice'), get_order_email_arguments_description());
 }, 999);
 
@@ -218,7 +218,7 @@ function get_stock_email_arguments($product)
 	$options = FFLCommerce_Base::get_options();
 	return array(
 		'blog_name' => get_bloginfo('name'),
-		'shop_name' => $options->get('jigoshop_company_name'),
+		'shop_name' => $options->get('fflcommerce_company_name'),
 		'shop_address_1' => $options->get('fflcommerce_address_1'),
 		'shop_address_2' => $options->get('fflcommerce_address_2'),
 		'shop_tax_number' => $options->get('fflcommerce_tax_number'),
@@ -429,9 +429,9 @@ function fflcommerce_install_emails()
 				$message = $invoice;
 				break;
 			case 'low_stock_notification' :
-				$post_title = __('Low stock notification', 'jigoshop');
-				$title = __('[[shop_name]] Product low in stock', 'jigoshop');
-				$message = __('<p>#[product_id] [product_name] ([sku]) is low in stock.</p>', 'jigoshop');
+				$post_title = __('Low stock notification', 'fflcommerce');
+				$title = __('[[shop_name]] Product low in stock', 'fflcommerce');
+				$message = __('<p>#[product_id] [product_name] ([sku]) is low in stock.</p>', 'fflcommerce');
 				break;
 			case 'no_stock_notification' :
 				$post_title = __('No stock notification', 'fflcommerce');

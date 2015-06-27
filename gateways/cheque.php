@@ -76,16 +76,16 @@ class fflcommerce_cheque extends fflcommerce_payment_gateway {
 	}
 
 	/**
-	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 * Default Option settings for WordPress Settings API using the FFLCommerce_Options class
 	 *
-	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 * These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 *
 	 */
 	protected function get_default_options() {
 
 		$defaults = array();
 
-		// Define the Section name for the Jigoshop_Options
+		// Define the Section name for the FFLCommerce_Options
 		$defaults[] = array( 'name' => __('Cheque Payment', 'fflcommerce'), 'type' => 'title', 'desc' => __('Allows cheque payments. Allows you to make test purchases without having to use the sandbox area of a payment gateway. Quite useful for demonstrating to clients and for testing order emails and the \'success\' pages etc.', 'fflcommerce') );
 
 		// List each option in order of appearance with details

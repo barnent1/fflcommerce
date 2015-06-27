@@ -17,7 +17,7 @@
  */
 
 /**
- * Add the gateway to Jigoshop
+ * Add the gateway to FFL Commerce
  */
 add_filter('fflcommerce_payment_gateways', function($methods) {
 	$methods[] = 'fflcommerce_worldpay';
@@ -156,7 +156,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 		}
 
 		if (!in_array($this->currency, self::$allowed_currencies)) {
-			echo '<div class="error"><p>'.sprintf(__('The WorldPay gateway accepts payments in currencies of %s.  Your current currency is %s.  WorldPay won\'t work until you change the Jigoshop currency to an accepted one.  WorldPay is <strong>currently disabled</strong> on the Payment Gateways settings tab.', 'fflcommerce'), implode(', ', self::$allowed_currencies), $this->currency).'</p></div>';
+			echo '<div class="error"><p>'.sprintf(__('The WorldPay gateway accepts payments in currencies of %s.  Your current currency is %s.  WorldPay won\'t work until you change the FFL Commerce currency to an accepted one.  WorldPay is <strong>currently disabled</strong> on the Payment Gateways settings tab.', 'fflcommerce'), implode(', ', self::$allowed_currencies), $this->currency).'</p></div>';
 			$options->set('fflcommerce_worldpay_is_enabled', 'no');
 		}
 
@@ -263,7 +263,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 		$worldpay_args['country'] = $order->billing_country;
 		$worldpay_args['fixContact'] = ''; /* no address editing */
 
-		// Setup the Dymanic URL properties using Jigoshop Request API
+		// Setup the Dymanic URL properties using FFL Commerce Request API
 		$worldpay_args['MC_callback'] = $this->notify_url;
 		$worldpay_args['MC_cancel_return'] = $order->get_cancel_order_url();
 
@@ -327,7 +327,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 	}
 
 	/**
-	 * Catch the WorldPay Response - called from Jigoshop Request API Action Hook
+	 * Catch the WorldPay Response - called from FFL Commerce Request API Action Hook
 	 */
 	public function check_worldpay_response()
 	{
@@ -355,13 +355,13 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 				if ($this->response_pass == $callbackPW) {
 					$validated = true; /* both passwords match */
 				} else {
-					$error['validate_payment_password_error'] = sprintf(__('Your shop payment response password: \'%s\', WorldPay payment response password: \'%s\'.  The passwords for Payment Response Password from your Jigoshop WorldPay gateway settings and your WorldPay Merchant account do NOT match.', 'fflcommerce'), $callbackPW, $this->response_pass);
+					$error['validate_payment_password_error'] = sprintf(__('Your shop payment response password: \'%s\', WorldPay payment response password: \'%s\'.  The passwords for Payment Response Password from your FFL Commerce WorldPay gateway settings and your WorldPay Merchant account do NOT match.', 'fflcommerce'), $callbackPW, $this->response_pass);
 					fflcommerce_log($error['validate_payment_password_error'], 'WorldPay Gateway');
 				}
 			} elseif (empty($this->response_pass) && empty($callbackPW)) {
 				$validated = true; /* skip check if no passwords supplied */
 			} else {
-				$error['validate_payment_password_missing'] = sprintf(__('Your shop payment response password: \'%s\', WorldPay payment response password: \'%s\'.  If you are using a Payment Response Password, make sure it is entered in BOTH the WorldPay Gateway settings in Jigoshop AND in your WorldPay Merchant Account.', 'fflcommerce'), $callbackPW, $this->response_pass);
+				$error['validate_payment_password_missing'] = sprintf(__('Your shop payment response password: \'%s\', WorldPay payment response password: \'%s\'.  If you are using a Payment Response Password, make sure it is entered in BOTH the WorldPay Gateway settings in FFL Commerce AND in your WorldPay Merchant Account.', 'fflcommerce'), $callbackPW, $this->response_pass);
 				fflcommerce_log($error['validate_payment_password_missing'], 'WorldPay Gateway');
 			}
 		} else {
@@ -397,11 +397,11 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 	 */
 	private function email_worldpay_error_logs($error = array(), $posted = array(), $info = '')
 	{
-		$subject = sprintf(__('[%s] Jigoshop WorldPay Error Log for %s', 'fflcommerce'), html_entity_decode(get_bloginfo('name'), ENT_QUOTES), $info);
+		$subject = sprintf(__('[%s] FFL Commerce WorldPay Error Log for %s', 'fflcommerce'), html_entity_decode(get_bloginfo('name'), ENT_QUOTES), $info);
 		$message = $info.PHP_EOL;
 		$message .= '======================================================='.PHP_EOL;
 		if (!empty($error)) {
-			$message .= __('Errors logged during the Jigoshop WorldPay payment response validation:', 'fflcommerce').PHP_EOL;
+			$message .= __('Errors logged during the FFL Commerce WorldPay payment response validation:', 'fflcommerce').PHP_EOL;
 			foreach ($error as $key => $value) {
 				$message .= $key.' = '.$value.PHP_EOL;
 			}
@@ -525,8 +525,8 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 	}
 
 	/**
-	 *  Default Option settings for WordPress Settings API using the Jigoshop_Options class
-	 *  These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 *  Default Option settings for WordPress Settings API using the FFLCommerce_Options class
+	 *  These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 */
 	protected function get_default_options()
 	{
@@ -534,7 +534,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 			array(
 				'name' => sprintf(__('WorldPay %s', 'fflcommerce'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.fflcommerce::assets_url().'/assets/images/icons/worldpay.png" alt="WorldPay">'),
 				'type' => 'title',
-				'desc' => sprintf(__("To ensure your <strong>Preferential Jigoshop Partner Rates</strong>, please complete your %s.  Merchants who fail to register here will be put on WorldPay standard new business accounts which carry higher rates.<br/><br/>The WorldPay gateway uses a Dynamic Response URL. You <strong>must activate</strong> this in your %s with the following:<br/>1) Go to <strong>WorldPay Merchant Interface -> Installations -> Integration Setup (TEST / PRODUCTION)</strong><br/>2) Check the <strong>Payment Response enabled?</strong> checkbox. <br/>3) Copy and Paste the full tag in bold <strong>&lt;wpdisplay item=MC_callback&gt;</strong> to the <strong>Payment Response URL</strong> input field.<br/>4) Check the <strong>Enable the Shopper Response</strong> checkbox. <br/>5) Save Changes.", 'fflcommerce'),
+				'desc' => sprintf(__("To ensure your <strong>Preferential FFL Commerce Partner Rates</strong>, please complete your %s.  Merchants who fail to register here will be put on WorldPay standard new business accounts which carry higher rates.<br/><br/>The WorldPay gateway uses a Dynamic Response URL. You <strong>must activate</strong> this in your %s with the following:<br/>1) Go to <strong>WorldPay Merchant Interface -> Installations -> Integration Setup (TEST / PRODUCTION)</strong><br/>2) Check the <strong>Payment Response enabled?</strong> checkbox. <br/>3) Copy and Paste the full tag in bold <strong>&lt;wpdisplay item=MC_callback&gt;</strong> to the <strong>Payment Response URL</strong> input field.<br/>4) Check the <strong>Enable the Shopper Response</strong> checkbox. <br/>5) Save Changes.", 'fflcommerce'),
 					'<a href="https://business.worldpay.com/partner/fflcommerce" target="_blank">WorldPay Merchant registration here</a>',
 					'<a href="https://secure.worldpay.com/sso/public/auth/login.html?serviceIdentifier=merchantadmin" target="_blank">WorldPay Merchant Account</a>'),
 			),
@@ -589,7 +589,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 			array(
 				'name' => __('Payment Response Password', 'fflcommerce'),
 				'desc' => '',
-				'tip' => __("This option adds an additional security check to the Payment Response sent from WorldPay to Jigoshop, to help validate that the Payment has been sent from WorldPay<br/>1. Add a <strong>'Payment Response Password'</strong> here <br/>2. Add the password in <strong>Merchant Interface->Installations->Integration Setup (TEST or PRODUCTION)-><em>Payment Response Password</em></strong> field.<br/>Leave both empty to skip this check.", 'fflcommerce'),
+				'tip' => __("This option adds an additional security check to the Payment Response sent from WorldPay to FFL Commerce, to help validate that the Payment has been sent from WorldPay<br/>1. Add a <strong>'Payment Response Password'</strong> here <br/>2. Add the password in <strong>Merchant Interface->Installations->Integration Setup (TEST or PRODUCTION)-><em>Payment Response Password</em></strong> field.<br/>Leave both empty to skip this check.", 'fflcommerce'),
 				'id' => 'fflcommerce_worldpay_response_password',
 				'std' => '',
 				'type' => 'text'
@@ -629,7 +629,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 			array(
 				'name' => __('Receive Error Logs', 'fflcommerce'),
 				'desc' => '',
-				'tip' => __("Do you want to receive emails for the error logs from Jigoshop security/fraud checks.", 'fflcommerce'),
+				'tip' => __("Do you want to receive emails for the error logs from FFL Commerce security/fraud checks.", 'fflcommerce'),
 				'id' => 'fflcommerce_worldpay_receive_security_logs',
 				'std' => 'yes',
 				'type' => 'checkbox',
@@ -641,7 +641,7 @@ class fflcommerce_worldpay extends fflcommerce_payment_gateway
 			array(
 				'name' => __('Email error logs to', 'fflcommerce'),
 				'desc' => '',
-				'tip' => __('Email address you want to receive all error logs to. If email field is empty, the Jigoshop email address will be used.', 'fflcommerce'),
+				'tip' => __('Email address you want to receive all error logs to. If email field is empty, the FFL Commerce email address will be used.', 'fflcommerce'),
 				'id' => 'fflcommerce_worldpay_security_logs_emailto',
 				'std' => '',
 				'type' => 'email'

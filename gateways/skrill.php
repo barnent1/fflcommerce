@@ -4,18 +4,18 @@
  *
  * DISCLAIMER
  *
- * Do not edit or add directly to this file if you wish to upgrade Jigoshop to newer
- * versions in the future. If you wish to customise Jigoshop core for your needs,
+ * Do not edit or add directly to this file if you wish to upgrade FFL Commerce to newer
+ * versions in the future. If you wish to customise FFL Commerce core for your needs,
  * please use our GitHub repository to publish essential changes for consideration.
  *
- * @package             Jigoshop
+ * @package             FFLCommerce
  * @category            Checkout
- * @author              Jigoshop
- * @copyright           Copyright © 2011-2013 Jigoshop.
- * @license             http://jigoshop.com/license/commercial-edition
+ * @author              Tampa Bay Tactical Supply, Inc.
+ * @copyright           Copyright © 2011-2013 Tampa Bay Tactical Supply, Inc. & Jigoshop.
+ * @license             http://fflcommerce.com/license/commercial-edition
  */
 
-/** Add the gateway to JigoShop **/
+/** Add the gateway to FFL Commerce **/
 function add_skrill_gateway( $methods ) {
 	$methods[] = 'skrill';
 	return $methods;
@@ -80,16 +80,16 @@ class skrill extends fflcommerce_payment_gateway {
 	}
 
 	/**
-	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
+	 * Default Option settings for WordPress Settings API using the FFLCommerce_Options class
 	 *
-	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 * These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 *
 	 */
 	protected function get_default_options() {
 
 		$defaults = array();
 
-		// Define the Section name for the Jigoshop_Options
+		// Define the Section name for the FFLCommerce_Options
 		$defaults[] = array( 	
 			'name' => __('Skrill (Moneybookers)', 'fflcommerce'), 
 			'type' => 'title', 
@@ -197,7 +197,7 @@ class skrill extends fflcommerce_payment_gateway {
 
 		$skrill_args = array(
 			'merchant_fields'      => 'partner',
-			'partner'              => 'Jigoshop',
+			'partner'              => 'FFLCommerce',
 			'pay_to_email'         => $this->email,
 			'recipient_description'=> get_bloginfo('name'),
 			'transaction_id'       => $order_id,

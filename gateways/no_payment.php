@@ -13,7 +13,7 @@ class no_payment extends fflcommerce_payment_gateway
 
 	public function is_available()
 	{
-		return !is_fflcommerce_single_page(JIGOSHOP_PAY);
+		return !is_fflcommerce_single_page(FFLCOMMERCE_PAY);
 	}
 
 	/**
@@ -44,7 +44,7 @@ class no_payment extends fflcommerce_payment_gateway
 }
 
 /**
- * Add the gateway to Jigoshop (only to be used on frontend for free orders!)
+ * Add the gateway to FFL Commerce (only to be used on frontend for free orders!)
  */
 add_filter('fflcommerce_payment_gateways', function($methods){
 	if ((is_admin() && !is_ajax())) {

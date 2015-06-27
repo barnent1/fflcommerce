@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://purl.org/rss/1.0/modules/content/" uri="web.resource.org/rss/1.0/modules/content/index.xml"/>
-    <system systemId="http://purl.org/dc/elements/1.1/" uri="dublincore.org/2012/06/14/dcelements"/>
-</catalog>

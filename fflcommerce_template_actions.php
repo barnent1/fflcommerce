@@ -84,7 +84,7 @@ add_action('fflcommerce_checkout_order_review', 'fflcommerce_order_review', 10);
 add_action('fflcommerce_review_order_after_submit', 'fflcommerce_verify_checkout_states_for_countries_message');
 add_action('fflcommerce_review_order_after_submit', 'fflcommerce_eu_b2b_vat_message');
 
-/* Remove the singular class for jigoshop single product */
+/* Remove the singular class for fflcommerce single product */
 add_action('after_setup_theme', 'fflcommerce_body_classes_check');
 
 function fflcommerce_body_classes_check()

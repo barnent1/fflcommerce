@@ -17,7 +17,7 @@
  */
 
 /**
- * Add the gateway to Jigoshop
+ * Add the gateway to FFL Commerce
  */
 add_filter('fflcommerce_payment_gateways', function ($methods){
 	$methods[] = 'paypal';
@@ -38,7 +38,7 @@ class paypal extends fflcommerce_payment_gateway
 		$options = FFLCommerce_Base::get_options();
 
 		$this->id = 'paypal';
-		$this->icon = JIGOSHOP_URL.'/assets/images/icons/paypal.png';
+		$this->icon = FFLCOMMERCE_URL.'/assets/images/icons/paypal.png';
 		$this->has_fields = false;
 		$this->enabled = $options->get('fflcommerce_paypal_enabled');
 		$this->title = $options->get('fflcommerce_paypal_title');
@@ -183,7 +183,7 @@ class paypal extends fflcommerce_payment_gateway
 				'invoice' => $order->get_order_number(),
 				'amount' => number_format((float)$order->order_total, $this->decimals),
 				//BN code
-				'bn' => 'Jigoshop_SP'
+				'bn' => 'FFLCommerce_SP'
 			),
 			$phone_args
 		);
@@ -334,7 +334,7 @@ class paypal extends fflcommerce_payment_gateway
 			'body' => $values,
 			'sslverify' => false,
 			'timeout' => 30,
-			'user-agent' => 'Jigoshop/'.JIGOSHOP_VERSION,
+			'user-agent' => 'FFLCommerce/'.FFLCOMMERCE_VERSION,
 		);
 
 		// Get url
@@ -474,14 +474,14 @@ class paypal extends fflcommerce_payment_gateway
 	}
 
 	/**
-	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
-	 * These will be installed on the Jigoshop_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
+	 * Default Option settings for WordPress Settings API using the FFLCommerce_Options class
+	 * These will be installed on the FFLCommerce_Options 'Payment Gateways' tab by the parent class 'fflcommerce_payment_gateway'
 	 */
 	protected function get_default_options()
 	{
 		return array(
 			array(
-				'name' => sprintf(__('PayPal Standard %s', 'fflcommerce'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.JIGOSHOP_URL.'/assets/images/icons/paypal.png" alt="PayPal">'),
+				'name' => sprintf(__('PayPal Standard %s', 'fflcommerce'), '<img style="vertical-align:middle;margin-top:-4px;margin-left:10px;" src="'.FFLCOMMERCE_URL.'/assets/images/icons/paypal.png" alt="PayPal">'),
 				'type' => 'title',
 				'desc' => __('PayPal Standard works by sending the user to <a href="https://www.paypal.com/">PayPal</a> to enter their payment information.', 'fflcommerce')
 			),

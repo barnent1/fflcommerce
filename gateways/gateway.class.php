@@ -42,8 +42,8 @@ abstract class fflcommerce_payment_gateway
 	public abstract function process_payment($order_id);
 
 	/**
-	 * Default Option settings for WordPress Settings API using the Jigoshop_Options class
-	 * These should be installed on the Jigoshop_Options 'Payment Gateways' tab
+	 * Default Option settings for WordPress Settings API using the FFLCommerce_Options class
+	 * These should be installed on the FFLCommerce_Options 'Payment Gateways' tab
 	 */
 	protected function get_default_options()
 	{

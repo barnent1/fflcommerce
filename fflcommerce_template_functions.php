@@ -535,7 +535,7 @@ if (!function_exists('fflcommerce_variable_add_to_cart')) {
 				$vattrs = $variation->get_variation_attributes();
 				$availability = $variation->get_availability();
 
-				//@todo needs to be moved to jigoshop_product_variation class
+				//@todo needs to be moved to fflcommerce_product_variation class
 				if (has_post_thumbnail($variation->get_variation_id())) {
 					$attachment_id = get_post_thumbnail_id($variation->get_variation_id());
 					$large_thumbnail_size = apply_filters('single_product_large_thumbnail_size', 'shop_large');
@@ -858,7 +858,7 @@ if (!function_exists('fflcommerce_get_product_thumbnail')) {
 		if (has_post_thumbnail()) {
 			return get_the_post_thumbnail($post->ID, $size);
 		} else {
-			return jigoshop_get_image_placeholder($size);
+			return fflcommerce_get_image_placeholder($size);
 		}
 	}
 }
@@ -1223,7 +1223,7 @@ if (!function_exists('fflcommerce_breadcrumb')) {
 					echo $before.get_the_title().$after;
 				endif;
 			elseif (is_404()) :
-				echo $before.__('Error 404', 'jigoshop').$after;
+				echo $before.__('Error 404', 'fflcommerce').$after;
 			elseif (!is_single() && !is_page() && get_post_type() != 'post') :
 				$post_type = get_post_type_object(get_post_type());
 				if ($post_type) : echo $before.$post_type->labels->singular_name.$after; endif;
