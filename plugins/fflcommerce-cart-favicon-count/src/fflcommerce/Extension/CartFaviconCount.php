@@ -1,17 +1,17 @@
 <?php
 
-namespace Jigoshop\Extension;
+namespace FFLCommerce\Extension;
 
 class CartFaviconCount
 {
 	public function __construct(){
 		if(is_admin())
 		{
-			\Jigoshop_Base::get_options()->install_external_options_tab(__('Cart Favicon', 'fflcommerce_cart_favicon_count'), $this->adminSettings());
+			\FFLCommerce_Base::get_options()->install_external_options_tab(__('Cart Favicon', 'fflcommerce_cart_favicon_count'), $this->adminSettings());
 			add_action('admin_enqueue_scripts', array($this, 'adminScripts'), 9);
 			add_action('init', array($this, 'adminStyles'));
 		}
-		if(\Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_enable') == 'yes' && (\Jigoshop_Base::get_options()->exists('fflcommerce_cart_favicon_count_url'))){
+		if(\FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_enable') == 'yes' && (\FFLCommerce_Base::get_options()->exists('fflcommerce_cart_favicon_count_url'))){
 			add_action('wp_head', array($this, 'addFavicon'),1000);
 			add_action('wp_enqueue_scripts', array($this, 'frontScripts'), 9);
 		}
@@ -76,7 +76,7 @@ class CartFaviconCount
 	}
 
 	public function addFavicon() {
-		$favicon = \Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_url');
+		$favicon = \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_url');
 		echo '<link id="fflcommerce_favicon" rel="shortcut icon" href="'.$favicon.'" />';
 	}
 
@@ -84,10 +84,10 @@ class CartFaviconCount
 		jrto_enqueue_script('frontend', 'favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/js/favicon.js', array('jquery'));
 		jrto_localize_script('favicon', 'favicon_params', array(
 			'favicon_count'	=> \fflcommerce_cart::$cart_contents_count,
-			'favicon_url' => \Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_url'),
-			'position' => \Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_position'),
-			'bg_color' =>  \Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_bg_color'),
-			'text_color' => \Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_text_color')
+			'favicon_url' => \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_url'),
+			'position' => \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_position'),
+			'bg_color' =>  \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_bg_color'),
+			'text_color' => \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_text_color')
 		));
 	}
 
@@ -104,7 +104,7 @@ class CartFaviconCount
 	public function displayFileUpload() {
 		ob_start();
 		echo '<table>';
-		if(\Jigoshop_Base::get_options()->exists('fflcommerce_cart_favicon_count_url')){
+		if(\FFLCommerce_Base::get_options()->exists('fflcommerce_cart_favicon_count_url')){
 			echo '<tr><td>'.__('Actual icon:', 'fflcommerce_cart_favicon_count').'</td><td><img src="'.\Jigoshop_Base::get_options()->get('fflcommerce_cart_favicon_count_url').'"/></td></tr>';
 		}
 		echo '<tr><td>'.__('Upload new icon:', 'fflcommerce_cart_favicon_count').'</td><td><input type="file" id="fflcommerce_cart_favicon_count_file" name="fflcommerce_cart_favicon_count_file" value="" /></td></tr>';
