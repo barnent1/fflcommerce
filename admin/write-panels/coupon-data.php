@@ -331,30 +331,30 @@ function fflcommerce_process_shop_coupon_meta( $post_id, $post ) {
 
 	global $wpdb, $fflcommerce_errors;
 
-	$type = jigowatt_clean( $_POST['type'] );
-	$amount = abs( jigowatt_clean( $_POST['amount'] ));
+	$type = fflcommerce_clean( $_POST['type'] );
+	$amount = abs( fflcommerce_clean( $_POST['amount'] ));
 
 	if ( !empty( $_POST['date_from'] )) {
-		$coupon_date_from = strtotime( jigowatt_clean( $_POST['date_from'] ));
+		$coupon_date_from = strtotime( fflcommerce_clean( $_POST['date_from'] ));
 	} else {
 		$coupon_date_from = '';
 	}
 
 	if ( !empty( $_POST['date_to'] )) {
-		$coupon_date_to = strtotime( jigowatt_clean( $_POST['date_to'] )) + (60 * 60 * 24 - 1);
+		$coupon_date_to = strtotime( fflcommerce_clean( $_POST['date_to'] )) + (60 * 60 * 24 - 1);
 	} else {
 		$coupon_date_to = '';
 	}
 
-	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) jigowatt_clean( $_POST['usage_limit'] ) : '';
+	$usage_limit = ( isset( $_POST['usage_limit'] ) && $_POST['usage_limit'] > 0 ) ? (int) fflcommerce_clean( $_POST['usage_limit'] ) : '';
 	$individual = isset( $_POST['individual_use'] );
 	$free_shipping = isset( $_POST['free_shipping'] );
 
-	$minimum_amount = jigowatt_clean( $_POST['order_total_min'] );
-	$maximum_amount = jigowatt_clean( $_POST['order_total_max'] );
+	$minimum_amount = fflcommerce_clean( $_POST['order_total_min'] );
+	$maximum_amount = fflcommerce_clean( $_POST['order_total_max'] );
 
 	if ( isset( $_POST['include_products'] )) {
-		$include_products = jigowatt_clean( $_POST['include_products'] );
+		$include_products = fflcommerce_clean( $_POST['include_products'] );
 		if ( $include_products == 'Array' ) $include_products = '';
 		$include_products = $include_products <> '' ? explode( ',', $include_products ) : array();
 	} else {
@@ -362,7 +362,7 @@ function fflcommerce_process_shop_coupon_meta( $post_id, $post ) {
 	}
 
 	if ( isset( $_POST['exclude_products'] )) {
-		$exclude_products = jigowatt_clean( $_POST['exclude_products'] );
+		$exclude_products = fflcommerce_clean( $_POST['exclude_products'] );
 		if ( $exclude_products == 'Array' ) $exclude_products = '';
 		$exclude_products = $exclude_products <> '' ? explode( ',', $exclude_products ) : array();
 	} else {

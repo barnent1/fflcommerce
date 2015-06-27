@@ -372,7 +372,7 @@ class FFLCommerce_Admin_Settings extends FFLCommerce_Singleton {
 						case 'text':
 						case 'longtext':
 						case 'textarea':
-							$valid_input[$setting['id']] = esc_attr(jigowatt_clean($value));
+							$valid_input[$setting['id']] = esc_attr(fflcommerce_clean($value));
 							break;
 						case 'codeblock':
 							$allowedtags = array(
@@ -405,11 +405,11 @@ class FFLCommerce_Admin_Settings extends FFLCommerce_Singleton {
 								);
 								$valid_input[$setting['id']] = $current_options[$setting['id']];
 							} else {
-								$valid_input[$setting['id']] = esc_attr(jigowatt_clean($email));
+								$valid_input[$setting['id']] = esc_attr(fflcommerce_clean($email));
 							}
 							break;
 						case 'decimal':
-							$cleaned = jigowatt_clean($value);
+							$cleaned = fflcommerce_clean($value);
 							if(!fflcommerce_validation::is_decimal($cleaned) && $cleaned <> ''){
 								add_settings_error(
 									$setting['id'],
@@ -423,7 +423,7 @@ class FFLCommerce_Admin_Settings extends FFLCommerce_Singleton {
 							}
 							break;
 						case 'integer':
-							$cleaned = jigowatt_clean($value);
+							$cleaned = fflcommerce_clean($value);
 							if(!fflcommerce_validation::is_integer($cleaned) && $cleaned <> ''){
 								add_settings_error(
 									$setting['id'],
@@ -437,7 +437,7 @@ class FFLCommerce_Admin_Settings extends FFLCommerce_Singleton {
 							}
 							break;
 						case 'natural':
-							$cleaned = jigowatt_clean($value);
+							$cleaned = fflcommerce_clean($value);
 							if(!fflcommerce_validation::is_natural($cleaned) && $cleaned <> ''){
 								add_settings_error(
 									$setting['id'],
@@ -528,7 +528,7 @@ class FFLCommerce_Admin_Settings extends FFLCommerce_Singleton {
 			$countries = $tax_fields['tax_country'][$i];
 			$label = trim($tax_fields['tax_label'][$i]);
 			$rate = number_format(floatval($tax_fields['tax_rate'][$i]), 4);
-			$class = jigowatt_clean($tax_fields['tax_classes'][$i]);
+			$class = fflcommerce_clean($tax_fields['tax_classes'][$i]);
 			$shipping = !empty($tax_fields['tax_shipping'][$i]) ? 'yes' : 'no';
 			$compound = !empty($tax_fields['tax_compound'][$i]) ? 'yes' : 'no';
 

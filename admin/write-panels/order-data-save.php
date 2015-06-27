@@ -166,16 +166,16 @@ function fflcommerce_process_shop_order_meta($post_id)
 				}
 			}
 
-			$cost_inc_tax = $fflcommerce_options->get('fflcommerce_prices_include_tax') == 'yes' ? number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', '') : -1;
+			$cost_inc_tax = $fflcommerce_options->get('fflcommerce_prices_include_tax') == 'yes' ? number_format((float)fflcommerce_clean($item_cost[$i]), 2, '.', '') : -1;
 			$order_items[] = apply_filters('update_order_item', array(
 				'id' => htmlspecialchars(stripslashes($item_id[$i])),
 				'variation_id' => $variation_id,
 				'variation' => $variation,
 				'name' => htmlspecialchars(stripslashes($item_name[$i])),
 				'qty' => (int)$item_quantity[$i],
-				'cost' => number_format((float)jigowatt_clean($item_cost[$i]), 2, '.', ''),
+				'cost' => number_format((float)fflcommerce_clean($item_cost[$i]), 2, '.', ''),
 				'cost_inc_tax' => $cost_inc_tax,
-				'taxrate' => number_format((float)jigowatt_clean($item_tax_rate[$i]), 4, '.', '')
+				'taxrate' => number_format((float)fflcommerce_clean($item_tax_rate[$i]), 4, '.', '')
 			));
 		}
 	}

@@ -293,9 +293,9 @@ if (!defined('ABSPATH')) {
 		} else {
 			$posting['wp_remote_post']['note'] = __('wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'fflcommerce');
 			if (is_wp_error($response)) {
-				$posting['wp_remote_post']['note'] .= ' '.sprintf(__('Error: %s', 'fflcommerce'), jigowatt_clean($response->get_error_message()));
+				$posting['wp_remote_post']['note'] .= ' '.sprintf(__('Error: %s', 'fflcommerce'), fflcommerce_clean($response->get_error_message()));
 			} else {
-				$posting['wp_remote_post']['note'] .= ' '.sprintf(__('Status code: %s', 'fflcommerce'), jigowatt_clean($response['response']['code']));
+				$posting['wp_remote_post']['note'] .= ' '.sprintf(__('Status code: %s', 'fflcommerce'), fflcommerce_clean($response['response']['code']));
 			}
 			$posting['wp_remote_post']['success'] = false;
 		}
@@ -311,9 +311,9 @@ if (!defined('ABSPATH')) {
 		} else {
 			$posting['wp_remote_get']['note'] = __('wp_remote_get() failed. The fflcommerce plugin updater won\'t work with your server. Contact your hosting provider.', 'fflcommerce');
 			if (is_wp_error($response)) {
-				$posting['wp_remote_get']['note'] .= ' '.sprintf(__('Error: %s', 'fflcommerce'), jigowatt_clean($response->get_error_message()));
+				$posting['wp_remote_get']['note'] .= ' '.sprintf(__('Error: %s', 'fflcommerce'), fflcommerce_clean($response->get_error_message()));
 			} else {
-				$posting['wp_remote_get']['note'] .= ' '.sprintf(__('Status code: %s', 'fflcommerce'), jigowatt_clean($response['response']['code']));
+				$posting['wp_remote_get']['note'] .= ' '.sprintf(__('Status code: %s', 'fflcommerce'), fflcommerce_clean($response['response']['code']));
 			}
 			$posting['wp_remote_get']['success'] = false;
 		}

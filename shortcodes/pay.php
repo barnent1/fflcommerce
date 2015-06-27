@@ -121,7 +121,7 @@ function fflcommerce_pay_action()
 			// Pay form was posted - process payment
 			if (isset($_POST['pay']) && fflcommerce::verify_nonce('pay')) { // Update payment method
 				if ($order->order_total > 0) {
-					$payment_method = jigowatt_clean($_POST['payment_method']);
+					$payment_method = fflcommerce_clean($_POST['payment_method']);
 					$data = (array)maybe_unserialize(get_post_meta($order_id, 'order_data', true));
 					$data['payment_method'] = $payment_method;
 					update_post_meta($order_id, 'order_data', $data);

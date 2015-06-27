@@ -108,7 +108,7 @@ function fflcommerce_update_options() {
 			$dimensions = array( '_w', '_h' );
 			foreach ( $dimensions as $v )
 				!empty( $_POST[$valueID.$v] )
-				? update_option( $valueID.$v, jigowatt_clean($_POST[$valueID.$v]) )
+				? update_option( $valueID.$v, fflcommerce_clean($_POST[$valueID.$v]) )
 				: update_option( $valueID.$v, $value['std'] );
 
 			update_option($altSize, isset ( $_POST[$altSize] ) ? 'yes' : 'no');
@@ -124,7 +124,7 @@ function fflcommerce_update_options() {
 		}
 
 		isset($valueID) && isset($_POST[$valueID])
-			? update_option($valueID, jigowatt_clean($_POST[$valueID]))
+			? update_option($valueID, fflcommerce_clean($_POST[$valueID]))
 			: @delete_option($valueID);
 
 	endforeach;
@@ -162,8 +162,8 @@ function fflcommerce_update_taxes() {
 
 		$countries = $tax_country[$i];
 		$label     = trim($tax_label[$i]);
-		$rate      = number_format((float)jigowatt_clean($tax_rate[$i]), 4);
-		$class     = jigowatt_clean($tax_classes[$i]);
+		$rate      = number_format((float)fflcommerce_clean($tax_rate[$i]), 4);
+		$class     = fflcommerce_clean($tax_classes[$i]);
 
 		/* Checkboxes */
 		$shipping = !empty($tax_shipping[$i]) ? 'yes' : 'no';
@@ -276,9 +276,9 @@ function fflcommerce_update_coupons() {
 
 		if ( empty($coupon_code[$i]) || !is_numeric($coupon_amount[$i]) ) continue;
 
-		$amount              = jigowatt_clean($coupon_amount[$i]);
-		$code                = jigowatt_clean($coupon_code[$i]);
-		$type                = jigowatt_clean($coupon_type[$i]);
+		$amount              = fflcommerce_clean($coupon_amount[$i]);
+		$code                = fflcommerce_clean($coupon_code[$i]);
+		$type                = fflcommerce_clean($coupon_type[$i]);
 		$limit               = !empty($usage_limit[$i])                ? $usage_limit[$i]                                    : 0;
 		$min_order           = !empty($order_total_min[$i])            ? $order_total_min[$i]                                : 0;
 		$max_order           = !empty($order_total_max[$i])            ? $order_total_max[$i]                                : 0;

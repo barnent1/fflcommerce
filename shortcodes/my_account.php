@@ -168,7 +168,7 @@ function fflcommerce_edit_address()
 		if ($user_id > 0) {
 			foreach ($address as &$field) {
 				if (isset($_POST[$field['name']])) {
-					$field['value'] = jigowatt_clean($_POST[$field['name']]);
+					$field['value'] = fflcommerce_clean($_POST[$field['name']]);
 					update_user_meta($user_id, $field['name'], $field['value']);
 				}
 			}
