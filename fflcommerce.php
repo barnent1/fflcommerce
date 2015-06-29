@@ -165,6 +165,7 @@ include_once('gateways/no_payment.php');
 include_once('shipping/shipping_method.class.php');
 include_once('shipping/fflcommerce_calculable_shipping.php');
 include_once('shipping/flat_rate.php');
+include_once('shipping/ffl_dealer_shipping.php');
 include_once('shipping/free_shipping.php');
 include_once('shipping/local_pickup.php');
 

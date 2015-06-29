@@ -32,7 +32,7 @@ $options = FFLCommerce_Base::get_options(); ?>
 
 		<?php fflcommerce_checkout::render_shipping_dropdown(); ?>
 
-		<?php if (fflcommerce_cart::show_retail_price() && Jigoshop_Base::get_options()->get('fflcommerce_prices_include_tax') == 'no') : ?>
+		<?php if (fflcommerce_cart::show_retail_price() && FFLCommerce_Base::get_options()->get('fflcommerce_prices_include_tax') == 'no') : ?>
 			<tr>
 				<td colspan="2"><?php _e('Subtotal', 'fflcommerce'); ?></td>
 				<td><?php echo fflcommerce_cart::get_cart_subtotal(true, true); ?></td>
