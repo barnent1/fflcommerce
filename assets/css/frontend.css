@@ -282,7 +282,7 @@ ul.products.rows > li > div.after-product > div.quantity{display:inline-block;te
 ul.products.rows > li > div.after-product > a.button{float:none;}
 ul.products.rows.thumbnails > li > a.product{width:55%;}
 ul.products.rows.thumbnails > li > div.after-product > div.quantity{display:block;}
-#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-fflcommerce > a:before{content:' ';display:block;background-image:url('../images/jigo-ico.png') !important;width:19px;height:14px;margin-top:9px;}
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-fflcommerce > a:before{content:' ';display:block;background-image:url('../images/fflcommerce-ico.png') !important;width:19px;height:14px;margin-top:9px;}
 #content #breadcrumb, #content .type-product{margin:0;padding:0 0 0 1.5%;}
 body.fflcommerce-myaccount form#address > .button-alt{float:right;padding:10px 30px 11px;text-decoration:none;}
 body.fflcommerce-myaccount form#address > .button-alt:hover{color:#ffffff;}

@@ -81,7 +81,7 @@ class flat_rate extends fflcommerce_shipping_method
 
 	public function admin_scripts()
 	{
-		jrto_enqueue_script('admin', 'flat_rate_shipping', JIGOSHOP_URL.'/assets/js/shipping/flat_rate/admin.js', array('jquery'));
+		jrto_enqueue_script('admin', 'flat_rate_shipping', FFLCOMMERCE_URL.'/assets/js/shipping/flat_rate/admin.js', array('jquery'));
 	}
 
 	/**

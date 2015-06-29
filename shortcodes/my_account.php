@@ -159,12 +159,12 @@ function fflcommerce_get_address_fields($load_address, $user_id)
 
 function fflcommerce_edit_address()
 {
-	$account_url = get_permalink(fflcommerce_get_page_id(JIGOSHOP_MY_ACCOUNT));
+	$account_url = get_permalink(fflcommerce_get_page_id(FFLCOMMERCE_MY_ACCOUNT));
 	$user_id = get_current_user_id();
 	$load_address = fflcommerce_get_address_to_edit();
 	$address = fflcommerce_get_address_fields($load_address, $user_id);
 
-	if (isset($_POST['save_address']) && fflcommerce::verify_nonce(JIGOSHOP_EDIT_ADDRESS)) {
+	if (isset($_POST['save_address']) && fflcommerce::verify_nonce(FFLCOMMERCE_EDIT_ADDRESS)) {
 		if ($user_id > 0) {
 			foreach ($address as &$field) {
 				if (isset($_POST[$field['name']])) {
@@ -179,7 +179,7 @@ function fflcommerce_edit_address()
 
 	fflcommerce_render('shortcode/my_account/edit_address', array(
 		'url' => add_query_arg('address', $load_address,
-			apply_filters('fflcommerce_get_edit_address_page_id', get_permalink(fflcommerce_get_page_id(JIGOSHOP_EDIT_ADDRESS)))),
+			apply_filters('fflcommerce_get_edit_address_page_id', get_permalink(fflcommerce_get_page_id(FFLCOMMERCE_EDIT_ADDRESS)))),
 		'account_url' => $account_url,
 		'load_address' => $load_address,
 		'address' => $address,
@@ -213,12 +213,12 @@ function fflcommerce_view_order()
 }
 
 add_action('template_redirect', function (){
-	$isViewOrder = is_fflcommerce_single_page(JIGOSHOP_VIEW_ORDER);
-	$isEditAddress = is_fflcommerce_single_page(JIGOSHOP_EDIT_ADDRESS);
-	$isChangePassword = is_fflcommerce_single_page(JIGOSHOP_CHANGE_PASSWORD);
+	$isViewOrder = is_fflcommerce_single_page(FFLCOMMERCE_VIEW_ORDER);
+	$isEditAddress = is_fflcommerce_single_page(FFLCOMMERCE_EDIT_ADDRESS);
+	$isChangePassword = is_fflcommerce_single_page(FFLCOMMERCE_CHANGE_PASSWORD);
 
 	if (($isViewOrder || $isEditAddress || $isChangePassword) && !is_user_logged_in()) {
-		wp_safe_redirect(apply_filters('fflcommerce_get_myaccount_page_id', get_permalink(fflcommerce_get_page_id(JIGOSHOP_MY_ACCOUNT))));
+		wp_safe_redirect(apply_filters('fflcommerce_get_myaccount_page_id', get_permalink(fflcommerce_get_page_id(FFLCOMMERCE_MY_ACCOUNT))));
 		exit;
 	}
 
@@ -242,7 +242,7 @@ add_action('template_redirect', function (){
 				if ($_POST['password-1'] == $_POST['password-2']) {
 					wp_update_user(array('ID' => $user_id, 'user_pass' => $_POST['password-1']));
 					fflcommerce::add_message(__('Password changed successfully.', 'fflcommerce'));
-					wp_safe_redirect(apply_filters('fflcommerce_get_myaccount_page_id', get_permalink(fflcommerce_get_page_id(JIGOSHOP_MY_ACCOUNT))));
+					wp_safe_redirect(apply_filters('fflcommerce_get_myaccount_page_id', get_permalink(fflcommerce_get_page_id(FFLCOMMERCE_MY_ACCOUNT))));
 					exit;
 				} else {
 					fflcommerce::add_error(__('Passwords do not match.', 'fflcommerce'));

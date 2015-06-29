@@ -81,7 +81,7 @@ class CartFaviconCount
 	}
 
 	public function frontScripts() {
-		jrto_enqueue_script('frontend', 'favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/js/favicon.js', array('jquery'));
+		jrto_enqueue_script('frontend', 'favicon', FFLCOMMERCE_CART_FAVICON_COUNT_URL.'/assets/js/favicon.js', array('jquery'));
 		jrto_localize_script('favicon', 'favicon_params', array(
 			'favicon_count'	=> \fflcommerce_cart::$cart_contents_count,
 			'favicon_url' => \FFLCommerce_Base::get_options()->get('fflcommerce_cart_favicon_count_url'),
@@ -92,13 +92,13 @@ class CartFaviconCount
 	}
 
 	public function adminScripts() {
-		jrto_enqueue_script('admin', 'favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/vendor/js/colpick.js', array('jquery'));
-		jrto_enqueue_script('admin', 'colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/js/init-colpick.js', array('jquery'));
+		jrto_enqueue_script('admin', 'favicon', FFLCOMMERCE_CART_FAVICON_COUNT_URL.'/vendor/js/colpick.js', array('jquery'));
+		jrto_enqueue_script('admin', 'colpick', FFLCOMMERCE_CART_FAVICON_COUNT_URL.'/assets/js/init-colpick.js', array('jquery'));
 	}
 
 	public function adminStyles() {
-		jrto_enqueue_style('admin', 'favicon', JIGOSHOP_CART_FAVICON_COUNT_URL.'/vendor/css/colpick.css');
-		jrto_enqueue_style('admin', 'colpick', JIGOSHOP_CART_FAVICON_COUNT_URL.'/assets/css/init-colpick.css');
+		jrto_enqueue_style('admin', 'favicon', FFLCOMMERCE_CART_FAVICON_COUNT_URL.'/vendor/css/colpick.css');
+		jrto_enqueue_style('admin', 'colpick', FFLCOMMERCE_CART_FAVICON_COUNT_URL.'/assets/css/init-colpick.css');
 	}
 
 	public function displayFileUpload() {

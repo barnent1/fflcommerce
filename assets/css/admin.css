@@ -1929,7 +1929,7 @@ body, html {
 }
 
 #fflcommerce-metaboxes-main #dashboard-widgets .postbox h3 span:before {
-	background: url(../images/jigo-ico.png) 0 -140px no-repeat;
+	background: url(../images/fflcommerce-ico.png) 0 -140px no-repeat;
 	content: "";
 	width: 15px;
 	height: 15px;
@@ -1958,7 +1958,7 @@ body, html {
 	display: inline-block;
 	height: 25px;
 	width: 132px;
-	background: url(../images/jigo-ico.png) 0 -480px no-repeat;
+	background: url(../images/fflcommerce-ico.png) 0 -480px no-repeat;
 	float: left;
 }
 
@@ -2127,7 +2127,7 @@ body, html {
 
 #fflcommerce_dash_latest_news .inside ul li a:before,
 #fflcommerce_dash_useful_links .inside ul li a:before {
-	background: url(../images/jigo-ico.png) 0 -162px no-repeat;
+	background: url(../images/fflcommerce-ico.png) 0 -162px no-repeat;
 	content: "";
 	width: 19px;
 	height: 19px;
@@ -2277,7 +2277,7 @@ div.pages ul.pages li a:hover {
 }
 
 #fflcommerce-stats .previous {
-	background: url(../images/jigo-ico.png) 0 -307px no-repeat;
+	background: url(../images/fflcommerce-ico.png) 0 -307px no-repeat;
 }
 
 #dashboard-widgets .fflcommerce-links-widget .social {
@@ -2297,7 +2297,7 @@ div.pages ul.pages li a:hover {
 }
 
 #fflcommerce-stats .next {
-	background: url(../images/jigo-ico.png) 0 -359px no-repeat;
+	background: url(../images/fflcommerce-ico.png) 0 -359px no-repeat;
 }
 
 #fflcommerce_dash_stock_report .inside {
@@ -2332,7 +2332,7 @@ div.pages ul.pages li a:hover {
 }
 
 #fflcommerce_dash_stock_report .inside .table .sub:before {
-	background: url(../images/jigo-ico.png) -58px -21px no-repeat;
+	background: url(../images/fflcommerce-ico.png) -58px -21px no-repeat;
 	content: "";
 	width: 54px;
 	height: 14px;
@@ -2342,7 +2342,7 @@ div.pages ul.pages li a:hover {
 }
 
 #fflcommerce_dash_stock_report .inside .table.table_discussion .sub:before {
-	background: url(../images/jigo-ico.png) -58px -39px no-repeat;
+	background: url(../images/fflcommerce-ico.png) -58px -39px no-repeat;
 }
 
 #fflcommerce-metaboxes-main div.error {

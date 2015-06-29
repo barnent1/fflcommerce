@@ -21,7 +21,7 @@ function get_fflcommerce_checkout( $atts ) {
 }
 
 function fflcommerce_checkout( $atts ) {
-	if (!defined('JIGOSHOP_CHECKOUT')) define('JIGOSHOP_CHECKOUT', true);
+	if (!defined('FFLCOMMERCE_CHECKOUT')) define('FFLCOMMERCE_CHECKOUT', true);
 
 	$non_js_checkout = (isset($_POST['update_totals']) && $_POST['update_totals']) ? true : false;
 
@@ -39,7 +39,7 @@ function fflcommerce_checkout( $atts ) {
 
 function fflcommerce_process_checkout()
 {
-	if (!is_checkout() || is_fflcommerce_single_page(JIGOSHOP_PAY)) {
+	if (!is_checkout() || is_fflcommerce_single_page(FFLCOMMERCE_PAY)) {
 		return;
 	}
 

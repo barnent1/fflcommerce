@@ -45,7 +45,7 @@ $options = Jigoshop_Base::get_options();
 								} else if (fflcommerce_cart_has_post_thumbnail($cart_item_key, $values['product_id'])) {
 									echo fflcommerce_cart_get_post_thumbnail($cart_item_key, $values['product_id'], 'shop_tiny');
 								} else {
-									echo '<img src="'.JIGOSHOP_URL.'/assets/images/placeholder.png" alt="Placeholder" width="'.fflcommerce::get_var('shop_tiny_w').'" height="'.fflcommerce::get_var('shop_tiny_h').'" />';
+									echo '<img src="'.FFLCOMMERCE_URL.'/assets/images/placeholder.png" alt="Placeholder" width="'.fflcommerce::get_var('shop_tiny_w').'" height="'.fflcommerce::get_var('shop_tiny_h').'" />';
 								}
 								?></a>
 						</td>

@@ -47,7 +47,7 @@ abstract class fflcommerce_calculable_shipping extends fflcommerce_shipping_meth
 
             foreach ($services_to_use as $current_service) :
 
-                if (!fflcommerce_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+                if (!fflcommerce_shipping::show_shipping_calculator() && !( defined('FFLCOMMERCE_CHECKOUT') && FFLCOMMERCE_CHECKOUT )) :
                     $request = '';
                     $this->set_error_message('Please proceed to checkout to get shipping estimates');
                 else :
@@ -77,7 +77,7 @@ abstract class fflcommerce_calculable_shipping extends fflcommerce_shipping_meth
             endforeach;
 
         else :
-            if (!fflcommerce_shipping::show_shipping_calculator() && !( defined('JIGOSHOP_CHECKOUT') && JIGOSHOP_CHECKOUT )) :
+            if (!fflcommerce_shipping::show_shipping_calculator() && !( defined('FFLCOMMERCE_CHECKOUT') && FFLCOMMERCE_CHECKOUT )) :
                 $request = '';
                 $this->set_error_message('Please proceed to checkout to get shipping estimates');
             else :

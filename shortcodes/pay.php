@@ -95,7 +95,7 @@ function fflcommerce_pay()
 
 function fflcommerce_pay_action()
 {
-	if (!is_fflcommerce_single_page(JIGOSHOP_PAY)) {
+	if (!is_fflcommerce_single_page(FFLCOMMERCE_PAY)) {
 		return;
 	}
 

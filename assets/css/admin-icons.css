@@ -1,6 +1,6 @@
 #toplevel_page_fflcommerce .toplevel_page_fflcommerce .wp-menu-image:before,
 #toplevel_page_fflcommerce ul.wp-submenu a:before {
-	background: url(../images/jigo-ico.png) no-repeat;
+	background: url(../images/fflcommerce-ico.png) no-repeat;
 	content: "";
 	width: 19px;
 	height: 15px;
@@ -58,7 +58,7 @@ div.pages ul.pages li a {
 	position: relative;
 }
 div.pages ul.pages li a:before {
-	background: url(../images/jigo-ico.png) -27px -21px no-repeat;
+	background: url(../images/fflcommerce-ico.png) -27px -21px no-repeat;
 	content: "";
 	width: 19px;
 	height: 19px;
@@ -84,7 +84,7 @@ div.pages ul.pages li +li+li+li a:before {
 	margin: -3px 0 0 -2px;
 }
 div.pages ul.pages li +li+li+li+li a:before {
-	background: url(../images/jigo-ico.png) -27px -83px no-repeat;
+	background: url(../images/fflcommerce-ico.png) -27px -83px no-repeat;
 	content: "";
 	width: 19px;
 	height: 19px;
@@ -114,7 +114,7 @@ div.pages ul.pages li:last-child a:before {
 #wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-fflcommerce > a:before {
 	content: ' ';
 	display: block;
-	background-image: url('../images/jigo-ico.png') !important;
+	background-image: url('../images/fflcommerce-ico.png') !important;
 	width: 19px;
 	height: 14px;
 	margin-top: 9px;

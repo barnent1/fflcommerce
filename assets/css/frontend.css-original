@@ -1764,7 +1764,7 @@ ul.products.rows.thumbnails > li > div.after-product > div.quantity {
 #wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > li#wp-admin-bar-fflcommerce > a:before {
 	content: ' ';
 	display: block;
-	background-image: url('../images/jigo-ico.png') !important;
+	background-image: url('../images/fflcommerce-ico.png') !important;
 	width: 19px;
 	height: 14px;
 	margin-top: 9px;

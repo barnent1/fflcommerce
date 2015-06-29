@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 		<tr>
 			<td data-export-label="FFL Commerce Version"><?php _e('FFL Commerce Version', 'fflcommerce'); ?>:</td>
 			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('The version of FFL Commerce installed on your site.', 'fflcommerce').'">[?]</a>'; ?></td>
-			<td><?php echo esc_html(JIGOSHOP_VERSION); ?></td>
+			<td><?php echo esc_html(FFLCOMMERCE_VERSION); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="FFL Commerce Database Version"><?php _e('FFL Commerce Database Version', 'fflcommerce'); ?>:</td>
@@ -45,10 +45,10 @@ if (!defined('ABSPATH')) {
 			<td data-export-label="Log Directory Writable"><?php _e('Log Directory Writable', 'fflcommerce'); ?>:</td>
 			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('Several FFL Commerce extensions can write logs which makes debugging problems easier. The directory must be writable for this to happen.', 'fflcommerce').'">[?]</a>'; ?></td>
 			<td><?php
-				if (@fopen(JIGOSHOP_LOG_DIR.'test-log.log', 'a')) {
-					echo '<mark class="yes">'.'&#10004; <code>'.JIGOSHOP_LOG_DIR.'</code></mark> ';
+				if (@fopen(FFLCOMMERCE_LOG_DIR.'test-log.log', 'a')) {
+					echo '<mark class="yes">'.'&#10004; <code>'.FFLCOMMERCE_LOG_DIR.'</code></mark> ';
 				} else {
-					printf('<mark class="error">'.'&#10005; '.__('To allow logging, make <code>%s</code> writable or define a custom <code>JIGOSHOP_LOG_DIR</code>.', 'fflcommerce').'</mark>', JIGOSHOP_LOG_DIR);
+					printf('<mark class="error">'.'&#10005; '.__('To allow logging, make <code>%s</code> writable or define a custom <code>FFLCOMMERCE_LOG_DIR</code>.', 'fflcommerce').'</mark>', FFLCOMMERCE_LOG_DIR);
 				}
 			?></td>
 		</tr>
@@ -79,8 +79,8 @@ if (!defined('ABSPATH')) {
 					}
 				}
 
-				if ($memory_limit < JIGOSHOP_REQUIRED_WP_MEMORY*1024*1024) {
-					echo '<mark class="error">'.sprintf(__('%s - We recommend setting memory to at least %dMB. See: <a href="%s" target="_blank">Increasing memory allocated to PHP</a>', 'fflcommerce'), size_format($memory_limit), JIGOSHOP_REQUIRED_WP_MEMORY, 'http://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP').'</mark>';
+				if ($memory_limit < FFLCOMMERCE_REQUIRED_WP_MEMORY*1024*1024) {
+					echo '<mark class="error">'.sprintf(__('%s - We recommend setting memory to at least %dMB. See: <a href="%s" target="_blank">Increasing memory allocated to PHP</a>', 'fflcommerce'), size_format($memory_limit), FFLCOMMERCE_REQUIRED_WP_MEMORY, 'http://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP').'</mark>';
 				} else {
 					echo '<mark class="yes">'.size_format($memory_limit).'</mark>';
 				}
@@ -114,8 +114,8 @@ if (!defined('ABSPATH')) {
 			<td data-export-label="PHP Version"><?php _e('PHP Version', 'fflcommerce'); ?>:</td>
 			<td class="help"><?php echo '<a href="#" class="help_tip" data-tip="'.esc_attr__('The version of PHP installed on your hosting server.', 'fflcommerce').'">[?]</a>'; ?></td>
 			<td><?php
-				if (version_compare(PHP_VERSION, JIGOSHOP_PHP_VERSION, '<')) {
-					echo '<mark class="error">'.sprintf(__('%s - We recommend a minimum PHP version of %s. See: <a href="%s" target="_blank">How to update your PHP version</a>', 'fflcommerce'), esc_html(PHP_VERSION), JIGOSHOP_PHP_VERSION, 'http://docs.woothemes.com/document/how-to-update-your-php-version/').'</mark>';
+				if (version_compare(PHP_VERSION, FFLCOMMERCE_PHP_VERSION, '<')) {
+					echo '<mark class="error">'.sprintf(__('%s - We recommend a minimum PHP version of %s. See: <a href="%s" target="_blank">How to update your PHP version</a>', 'fflcommerce'), esc_html(PHP_VERSION), FFLCOMMERCE_PHP_VERSION, 'http://docs.woothemes.com/document/how-to-update-your-php-version/').'</mark>';
 				} else {
 					echo '<mark class="yes">'.esc_html(PHP_VERSION).'</mark>';
 				}
@@ -282,7 +282,7 @@ if (!defined('ABSPATH')) {
 		$response = wp_remote_post('https://www.paypal.com/cgi-bin/webscr', array(
 			'sslverify' => false,
 			'timeout' => 60,
-			'user-agent' => 'FFL Commerce/'.JIGOSHOP_VERSION,
+			'user-agent' => 'FFL Commerce/'.FFLCOMMERCE_VERSION,
 			'body' => array(
 				'cmd' => '_notify-validate'
 			)
@@ -653,7 +653,7 @@ if (!defined('ABSPATH')) {
 	</thead>
 	<tbody>
 		<?php
-		$template_paths = apply_filters('fflcommerce_template_overrides_scan_paths', array('fflcommerce' => JIGOSHOP_DIR.'/templates/'));
+		$template_paths = apply_filters('fflcommerce_template_overrides_scan_paths', array('fflcommerce' => FFLCOMMERCE_DIR.'/templates/'));
 		$scanned_files = array();
 		$found_files = array();
 
@@ -676,7 +676,7 @@ if (!defined('ABSPATH')) {
 				}
 
 				if ($theme_file) {
-					$core_version = FFLCommerce_Admin_Status::get_file_version(JIGOSHOP_DIR.'/templates/'.$file);
+					$core_version = FFLCommerce_Admin_Status::get_file_version(FFLCOMMERCE_DIR.'/templates/'.$file);
 					$theme_version = FFLCommerce_Admin_Status::get_file_version($theme_file);
 
 					if ($core_version && (empty($theme_version) || version_compare($theme_version, $core_version, '<'))) {
