@@ -77,9 +77,9 @@ function fflcommerce_before_admin_menu()
 
 	if (current_user_can('manage_fflcommerce')) {
 		$menu[54] = array('', 'read', 'separator-fflcommerce', '', 'wp-menu-separator fflcommerce');
-	}
+	} 
 
-	add_menu_page(__('fflcommerce'), __('FFL Commerce'), 'manage_fflcommerce', 'fflcommerce', 'fflcommerce_dashboard', null, 55);
+	add_menu_page(__('fflcommerce'), __('fflcommerce'), 'manage_fflcommerce', 'fflcommerce', 'fflcommerce_dashboard', null, 55);
 	add_submenu_page('fflcommerce', __('Dashboard', 'fflcommerce'), __('Dashboard', 'fflcommerce'), 'manage_fflcommerce', 'fflcommerce', 'fflcommerce_dashboard');
 	add_submenu_page('fflcommerce', __('Reports', 'fflcommerce'), __('Reports', 'fflcommerce'), 'view_fflcommerce_reports', 'fflcommerce_reports', 'fflcommerce_reports');
 	add_submenu_page('edit.php?post_type=product', __('Attributes', 'fflcommerce'), __('Attributes', 'fflcommerce'), 'manage_product_terms', 'fflcommerce_attributes', 'fflcommerce_attributes');

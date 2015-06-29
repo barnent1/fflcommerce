@@ -410,7 +410,7 @@ class fflcommerce_dashboard {
 					<li><a href="https://www.fflcommerce.com/product-category/extensions/"><?php _e('Extensions', 'fflcommerce'); ?></a> &ndash; <?php _e('Extend fflcommerce with extra plugins and modules.', 'fflcommerce'); ?></li>
 					<li><a href="https://www.fflcommerce.com/product-category/themes/"><?php _e('Themes', 'fflcommerce'); ?></a> &ndash; <?php _e('Extend fflcommerce with themes.', 'fflcommerce'); ?></li>
 					<li><a href="http://twitter.com/#!/fflcommerce"><?php _e('@fflcommerce', 'fflcommerce'); ?></a> &ndash; <?php _e('Follow us on Twitter.', 'fflcommerce'); ?></li>
-					<li><a href="https://github.com/fflcommerce/fflcommerce"><?php _e('fflcommerce on Github', 'fflcommerce'); ?></a> &ndash; <?php _e('Help extend fflcommerce.', 'fflcommerce'); ?></li>
+					<li><a href="https://github.com/barnent1/fflcommerce"><?php _e('fflcommerce on Github', 'fflcommerce'); ?></a> &ndash; <?php _e('Help extend fflcommerce.', 'fflcommerce'); ?></li>
 					<li><a href="https://wordpress.org/plugins/fflcommerce/"><?php _e('fflcommerce on WordPress.org', 'fflcommerce'); ?></a> &ndash; <?php _e('Leave us a rating!', 'fflcommerce'); ?></li>
 				</ul>
 			</div>
@@ -422,14 +422,14 @@ class fflcommerce_dashboard {
 					<p><?php _e('Join our growing developer community today, contribute to the fflcommerce project via GitHub.', 'fflcommerce') ?>: <a href="https://github.com/fflcommerce/fflcommerce">Fork</a>
 					</p>
 					<h4><?php _e('FFL Commerce Social', 'fflcommerce'); ?></h4>
-					<ul id="jigo-social">
+					<ul id="fflcommerce-social">
 						<li><a href="https://www.facebook.com/fflcommerce?fref=ts" target="_blank" id="fb-icon">Facebook</a></li>
 						<li><a href="https://twitter.com/fflcommerce" target="_blank" id="tw-icon">Twitter</a></li>
 						<li><a href="https://plus.google.com/111168393814065931328/posts" target="_blank" id="gp-icon">G-plus</a></li>
 					</ul>
 				</div>
 			</div>
-			<div class="links jigo-links">
+			<div class="links fflcommerce-links">
 				<ul>
 					<li><a href="https://www.fflcommerce.com/"><?php _e('Learn more about the FFL Commerce plugin', 'fflcommerce'); ?></a></li>
 					<li><a href="https://www.fflcommerce.com/documentation/"><?php _e('Stuck? Read the plugin\'s documentation.', 'fflcommerce'); ?></a></li>
