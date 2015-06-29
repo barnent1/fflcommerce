@@ -3,7 +3,7 @@
  * @var $cart array Cart items.
  * @var $coupons array List of applied coupons.
  */
-$options = Jigoshop_Base::get_options();
+$options = FFLCommerce_Base::get_options();
 ?>
 
 <?php fflcommerce::show_messages(); ?>
@@ -83,7 +83,7 @@ $options = Jigoshop_Base::get_options();
 							echo apply_filters('fflcommerce_product_quantity_display_in_cart', $quantity_display, $values['product_id'], $values);
 							?>
 						</td>
-						<?php if(Jigoshop_Base::get_options()->get('fflcommerce_show_prices_with_tax') == 'yes') : ?>
+						<?php if(FFLCommerce_Base::get_options()->get('fflcommerce_show_prices_with_tax') == 'yes') : ?>
 							<td class="product-total">
 								<?php echo apply_filters('fflcommerce_product_total_display_in_cart', fflcommerce_price($product->get_defined_price() * $values['quantity']), $values['product_id'], $values); ?>
 							</td>
@@ -190,7 +190,7 @@ $options = Jigoshop_Base::get_options();
 							<th class="cart-row-subtotal-title"><?php _e('Subtotal', 'fflcommerce'); ?></th>
 							<?php
 							$price = fflcommerce_cart::$cart_contents_total_ex_tax + fflcommerce_cart::$shipping_total;
-							$price = Jigoshop_Base::get_options()->get('fflcommerce_show_prices_with_tax') == 'yes'? fflcommerce_price($price, array('ex_tax_label' => 1)) : fflcommerce_price($price);
+							$price = FFLCommerce_Base::get_options()->get('fflcommerce_show_prices_with_tax') == 'yes'? fflcommerce_price($price, array('ex_tax_label' => 1)) : fflcommerce_price($price);
 							?>
 							<td class="cart-row-subtotal"><?php echo $price; ?></td>
 						</tr>
